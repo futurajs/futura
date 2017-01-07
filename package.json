@@ -1,0 +1,11 @@
+{
+  "name": "futura",
+  "version": "0.1.0",
+  "description": "Modern state-machine based approach for building javascript applications",
+  "main": "index.js",
+  "author": {
+    "name": "Ali Sabil",
+    "email": "ali.sabil@gmail.com"
+  },
+  "license": "MIT"
+}
