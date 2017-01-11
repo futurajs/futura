@@ -1,7 +1,7 @@
-export type Task = (...any) => any;
+export type Task = (...any: any[]) => any;
 
 
-export default function asap(task: Task, ...args) {
+export default function asap(task: Task, ...args: any[]) {
   queue.push([task, args]);
   requestFlush();
 }

@@ -15,7 +15,7 @@ export class Automaton<State extends HasTransitions<State, Event, Services>, Eve
     asap(() => {
       const state = this.state;
       try {
-        const match = (value, type) => value instanceof type;
+        const match = (value: Event, type: any) => value instanceof type;
 
         const transitions = state.transitions.filter((transition) => match(event, transition.on));
         if (transitions.length > 0) {

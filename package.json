@@ -3,9 +3,30 @@
   "version": "0.1.0",
   "description": "Modern state-machine based approach for building javascript applications",
   "main": "index.js",
+  "scripts": {
+    "build": "tsc --version && tsc --project \"./src\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/futurajs/futura.git"
+  },
+  "keywords": [
+    "state-machine",
+    "fsm",
+    "flux",
+    "redux",
+    "ui"
+  ],
   "author": {
     "name": "Ali Sabil",
     "email": "ali.sabil@gmail.com"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/futurajs/futura/issues"
+  },
+  "homepage": "https://github.com/futurajs/futura",
+  "devDependencies": {
+    "typescript": "^2.1.4"
+  }
 }
