@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "../dist/typings",
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,

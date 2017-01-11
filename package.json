@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Modern state-machine based approach for building javascript applications",
   "main": "index.js",
+  "types": "dist/typings/index.d.ts",
   "scripts": {
     "build": "tsc --version && tsc --project \"./src\""
   },
