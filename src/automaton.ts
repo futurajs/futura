@@ -17,7 +17,7 @@ export class Automaton<State extends HasTransitions<State, Event, Services>, Eve
       try {
         const match = (value: Event, type: any) => value instanceof type;
 
-        const transitions = state.transitions.filter((transition) => match(event, transition.on));
+        const transitions = (state.transitions || []).filter((transition) => match(event, transition.on));
         if (transitions.length > 0) {
           const newState = transitions[0].do.call(state, event, this.services);
           if (newState !== state) {
@@ -58,7 +58,7 @@ export class Automaton<State extends HasTransitions<State, Event, Services>, Eve
 }
 
 export interface HasTransitions<State, Event, Services> {
-  transitions: Transition<State, Event, Services>[];
+  transitions?: Transition<State, Event, Services>[];
 }
 
 export interface Transition<State, Event, Services> {
