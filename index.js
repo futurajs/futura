@@ -1,3 +1,3 @@
-var futura = require('./dist');
+var futura = require('./lib');
 
 module.exports = futura;

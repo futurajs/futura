@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "../dist/typings",
+    "declarationDir": "../lib/typings",
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
@@ -9,7 +9,7 @@
     "noImplicitThis": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "../dist",
+    "outDir": "../lib",
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
     "target": "es5"
