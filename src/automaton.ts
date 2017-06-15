@@ -2,9 +2,13 @@ import asap from './asap';
 
 
 export class Automaton<State extends HasTransitions<State, Event, Services>, Event, Services> {
-  private subscribers: Subscriber<State>[] = [];
+  private _state: State;
+  private readonly services: Services;
+  private readonly subscribers: Subscriber<State>[] = [];
 
-  constructor(private _state: State, private readonly services: Services) {
+  constructor(state: State, services: Services) {
+    this._state = state;
+    this.services = services;
   }
 
   get state() {
@@ -15,11 +19,13 @@ export class Automaton<State extends HasTransitions<State, Event, Services>, Eve
     asap(() => {
       const state = this.state;
       try {
-        const match = (value: Event, type: any) => value instanceof type;
+        const predicate = (transition: Transition<State, Event, Services>) =>
+          isInstance(event, transition.on)
 
-        const transitions = (state.transitions || []).filter((transition) => match(event, transition.on));
-        if (transitions.length > 0) {
-          const newState = transitions[0].do.call(state, event, this.services);
+        const transitions = state.transitions || [];
+        const matchingTransitions = transitions.filter(predicate);
+        if (matchingTransitions.length > 0) {
+          const newState = matchingTransitions[0].do.call(state, event, this.services);
           if (newState !== state) {
             this._state = newState;
             this.subscribers.forEach(notify => asap(notify, newState));
@@ -58,12 +64,12 @@ export class Automaton<State extends HasTransitions<State, Event, Services>, Eve
 }
 
 export interface HasTransitions<State, Event, Services> {
-  transitions?: Transition<State, Event, Services>[];
+  transitions?: ReadonlyArray<Transition<State, Event, Services>>;
 }
 
 export interface Transition<State, Event, Services> {
-  on: any,
-  do: (event: Event, services: Services) => State
+  on: Function;
+  do: (event: Event, services: Services) => State;
 }
 
 export interface Subscriber<State> {
@@ -73,3 +79,6 @@ export interface Subscriber<State> {
 export interface Subscription {
   cancel(): void;
 }
+
+const isInstance = (value: any, type: any) =>
+  value instanceof type;
