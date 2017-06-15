@@ -1,6 +1,6 @@
 {
   "name": "futura",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Modern state-machine based approach for building javascript applications",
   "main": "index.js",
   "types": "lib/typings/index.d.ts",
