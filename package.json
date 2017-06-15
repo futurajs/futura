@@ -5,8 +5,9 @@
   "main": "index.js",
   "types": "lib/typings/index.d.ts",
   "scripts": {
+    "prebuild": "rimraf lib/",
     "build": "tsc --project \"./src\"",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "lib"
@@ -32,6 +33,8 @@
   },
   "homepage": "https://github.com/futurajs/futura",
   "devDependencies": {
-    "typescript": "^2.1.4"
-  }
+    "rimraf": "^2.6.1",
+    "typescript": "^2.3.4"
+  },
+  "dependencies": {}
 }
