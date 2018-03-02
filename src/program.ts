@@ -15,7 +15,7 @@ export class Program<State, Message> {
 
   constructor(options: Program.Options<State, Message>) {
     const { init, update, subscriptions } = options;
-    const { state: initialState, requests: initialRequests } = init();
+    const { state: initialState, requests: initialRequests = [] } = init();
 
     this.state$ = new Value(initialState);
     this.message$ = new Signal<Message>();
@@ -57,7 +57,7 @@ export namespace Program {
 
   export interface Next<State, Message> {
     state: State;
-    requests: ReadonlyArray<Req<Message, any>>;
+    requests?: ReadonlyArray<Req<Message, any>>;
   }
 }
 
