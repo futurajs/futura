@@ -52,15 +52,15 @@ export namespace Program {
   export interface Options<State, Message> {
     readonly env?: Record<string, any>;
 
-    init(): Next<State, Message>;
-    update(state: State, message: Message): Next<State, Message>;
+    init(): Next<State>;
+    update(state: State, message: Message): Next<State>;
     subscriptions?(state: State): ReadonlyArray<Sub<Message, any>>;
   }
+}
 
-  export interface Next<State, Message> {
-    state: State;
-    requests?: ReadonlyArray<Req<Message, any>>;
-  }
+export interface Next<State> {
+  state: State;
+  requests?: ReadonlyArray<Req<any, any>>;
 }
 
 export type Dispatch<Message = any> = (message: Message) => void;
