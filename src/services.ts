@@ -39,7 +39,7 @@ export class Services<Message> {
       }
     }
 
-    const env = this.env[Type.name];
+    const env = this.env[Type.id];
     const service = new Type(this.dispatch, env);
     this.services.push(service);
     return service;
@@ -65,6 +65,6 @@ export interface Sub<Message = any, ServiceSub = any> {
 }
 
 export interface ServiceClass<Message, ServiceReq, ServiceSub> {
-  readonly name: string;
+  readonly id: string;
   new(dispatch: Dispatch<Message>, env: any): Service<Message, ServiceReq, ServiceSub>;
 }
