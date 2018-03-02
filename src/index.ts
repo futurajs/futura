@@ -1,1 +1,2 @@
-export { Automaton, HasTransitions, Subscription, Transition } from './automaton';
+export { Dispatch, program, Program } from "./program";
+export { Req, Service, Sub } from "./services";

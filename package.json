@@ -1,16 +1,21 @@
 {
   "name": "futura",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Modern state-machine based approach for building javascript applications",
   "main": "index.js",
-  "types": "lib/typings/index.d.ts",
+  "module": "lib.es2015/index.js",
+  "jsnext:main": "lib.es2015/index.js",
+  "types": "lib.es2015/typings/index.d.ts",
   "scripts": {
-    "prebuild": "rimraf lib/",
-    "build": "tsc --project \"./src\"",
-    "prepublishOnly": "npm run build"
+    "build": "npm run-script build:commonjs && npm run-script build:es2015",
+    "build:commonjs": "tsc -P tsconfig.json",
+    "build:es2015": "tsc -P tsconfig.es2015.json",
+    "prebuild": "rimraf lib/ lib.es2015/",
+    "prepare": "npm run build"
   },
   "files": [
-    "lib"
+    "lib",
+    "lib.es2015"
   ],
   "repository": {
     "type": "git",
@@ -33,8 +38,10 @@
   },
   "homepage": "https://github.com/futurajs/futura",
   "devDependencies": {
-    "rimraf": "^2.6.1",
-    "typescript": "^2.3.4"
+    "rimraf": "^2.6.2",
+    "tslint": "^5.9.1",
+    "tslint-language-service": "^0.9.8",
+    "typescript": "^2.7.2"
   },
   "dependencies": {}
 }
