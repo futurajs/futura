@@ -14,12 +14,12 @@ export class Program<State, Message> {
   private readonly services: Services<Message>;
 
   constructor(options: Program.Options<State, Message>) {
-    const { init, update, subscriptions } = options;
+    const { init, update, subscriptions, env = {} } = options;
     const { state: initialState, requests: initialRequests = [] } = init();
 
     this.state$ = new Value(initialState);
     this.message$ = new Signal<Message>();
-    this.services = new Services(this.update);
+    this.services = new Services(this.update, env);
 
     this.message$.subscribe((message) => {
       const { state, requests = [] } = update(this.state$.value, message);
@@ -50,6 +50,8 @@ export class Program<State, Message> {
 
 export namespace Program {
   export interface Options<State, Message> {
+    readonly env?: Record<string, any>;
+
     init(): Next<State, Message>;
     update(state: State, message: Message): Next<State, Message>;
     subscriptions?(state: State): ReadonlyArray<Sub<Message, any>>;

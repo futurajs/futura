@@ -4,10 +4,12 @@ import { Dispatch } from "./program";
 export class Services<Message> {
   private readonly dispatch: Dispatch<Message>;
   private readonly services: Array<Service<Message, any, any>>;
+  private readonly env: Record<string, any>;
 
-  constructor(dispatch: Dispatch<Message>) {
+  constructor(dispatch: Dispatch<Message>, env: Record<string, any>) {
     this.dispatch = dispatch;
     this.services = [];
+    this.env = env;
   }
 
   public handleRequests(requests: ReadonlyArray<Req<Message, any>>) {
@@ -37,7 +39,8 @@ export class Services<Message> {
       }
     }
 
-    const service = new Type(this.dispatch);
+    const env = this.env[Type.name];
+    const service = new Type(this.dispatch, env);
     this.services.push(service);
     return service;
   }
@@ -62,5 +65,6 @@ export interface Sub<Message = any, ServiceSub = any> {
 }
 
 export interface ServiceClass<Message, ServiceReq, ServiceSub> {
-  new(dispatch: Dispatch<Message>): Service<Message, ServiceReq, ServiceSub>;
+  readonly name: string;
+  new(dispatch: Dispatch<Message>, env: any): Service<Message, ServiceReq, ServiceSub>;
 }
