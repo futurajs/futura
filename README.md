@@ -1,3 +1,3 @@
 # Futura
 
-Futura is an experimental library for building JavaScript web applications using state machines.
+Futura is an experimental library for building JavaScript applications using state machines.
