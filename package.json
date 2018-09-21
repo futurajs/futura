@@ -1,0 +1,10 @@
+{
+  "name": "futura",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.4.0",
+    "tslint": "^5.11.0",
+    "tslint-language-service": "angelozerr/tslint-language-service#3c6e13e7ee219968af2df6130fd8b57742c9ae74",
+    "typescript": "^3.0.3"
+  }
+}
