@@ -1,0 +1,59 @@
+{
+  "name": "@futura/html",
+  "version": "0.4.0",
+  "description": "Virtual DOM based HTML implementation for futura",
+  "keywords": [
+    "elm",
+    "tea",
+    "flux",
+    "fsm",
+    "redux",
+    "state",
+    "state-machine",
+    "ui",
+    "virtual-dom"
+  ],
+  "author": "Ali Sabil <ali.sabil@gmail.com>",
+  "homepage": "https://github.com/futurajs/futura",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "lib.es2015/index.js",
+  "jsnext:main": "lib.es2015/index.js",
+  "types": "lib.es2015/typings/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib",
+    "lib.es2015"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/futurajs/futura.git"
+  },
+  "scripts": {
+    "build": "npm run-script build:commonjs && npm run-script build:es2015",
+    "build:commonjs": "npx tsc -P tsconfig.json",
+    "build:es2015": "npx tsc -P tsconfig.es2015.json",
+    "prebuild": "npx rimraf lib/ lib.es2015/",
+    "prepare": "npm run build",
+    "test": "npm test"
+  },
+  "test": "jest",
+  "bugs": {
+    "url": "https://github.com/futurajs/futura/issues"
+  },
+  "dependencies": {
+    "@futura/virtual-dom": "^0.4.0"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.2",
+    "tslint": "^5.11.0",
+    "tslint-language-service": "angelozerr/tslint-language-service#3c6e13e7ee219968af2df6130fd8b57742c9ae74",
+    "typescript": "^3.0.3"
+  }
+}
