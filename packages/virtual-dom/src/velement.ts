@@ -1,22 +1,21 @@
-import { VAttribute, VAttr, VEvent, VProp } from "./vattribute";
+import { VAttr, VEvent, VProp } from "./vattribute";
 import { VNode } from "./vnode";
 
-
-export class VElement<E extends Element, Prop extends Extract<keyof E, string> = Extract<keyof E, string>> {
+export class VElement<E extends Element> {
   private attrs: ReadonlyMap<string, VAttr>;
-  private props: ReadonlyMap<Prop, VProp<Prop, E[Prop]>>;
-  private events: ReadonlyMap<string, VEvent<string, Event>>;
+  private props: ReadonlyMap<string, VProp>;
+  private events: ReadonlyMap<string, VEvent>;
 
   constructor(
     private namespace: string | undefined,
     private type: string,
-    attributes: ReadonlyArray<VAttribute<E, Prop>>,
+    attributes: ReadonlyArray<VAttr | VProp | VEvent>,
     private children: ReadonlyArray<VNode>,
   ) {
     const classes: string[] = [];
     const attrs = new Map<string, VAttr>();
-    const props = new Map<Prop, VProp<Prop, E[Prop]>>();
-    const events = new Map<string, VEvent<string, Event>>();
+    const props = new Map<string, VProp>();
+    const events = new Map<string, VEvent>();
 
     for (const attribute of attributes) {
       if (attribute instanceof VAttr) {
@@ -47,13 +46,14 @@ export class VElement<E extends Element, Prop extends Extract<keyof E, string> =
   }
 
   public mount(): Node {
-    const element = this.namespace
+    const node = this.namespace
       ? document.createElementNS(this.namespace, this.type)
       : document.createElement(this.type);
+    const element = node as E;
 
-    this.updateAttrs(element as E, new Map());
-    this.updateProps(element as E, new Map());
-    this.updateEvents(element as E, new Map());
+    this.updateAttrs(element, new Map());
+    this.updateProps(element, new Map());
+    this.updateEvents(element, new Map());
 
     for (const child of this.children) {
       element.appendChild(child.mount());
@@ -78,7 +78,7 @@ export class VElement<E extends Element, Prop extends Extract<keyof E, string> =
     }
   }
 
-  public update(node: Node, oldVNode: VElement<any>): boolean {
+  public update(node: Node, oldVNode: VElement<Element>): boolean {
     if (oldVNode === this) {
       return true;
     }
@@ -89,7 +89,7 @@ export class VElement<E extends Element, Prop extends Extract<keyof E, string> =
         oldVNode.namespace === this.namespace &&
         oldVNode.type === this.type) {
       const element = node as E;
-      const oldVElement = oldVNode as VElement<E, Prop>;
+      const oldVElement = oldVNode;
 
       this.updateAttrs(element, oldVElement.attrs);
       this.updateProps(element, oldVElement.props);
@@ -118,22 +118,24 @@ export class VElement<E extends Element, Prop extends Extract<keyof E, string> =
     });
   }
 
-  private updateProps(element: E, oldVProps: ReadonlyMap<Prop, VProp<Prop, E[Prop]>>) {
+  private updateProps(element: E, oldVProps: ReadonlyMap<string, VProp>) {
     this.props.forEach((vprop, key) => {
       const oldVProp = oldVProps.get(key);
-      if (!oldVProp || oldVProp.value !== vprop.value) {
-        element[key] = vprop.value;
+      if (oldVProp) {
+        vprop.update(element, oldVProp);
+      } else {
+        vprop.mount(element);
       }
     });
 
-    oldVProps.forEach((_oldVProp, key) => {
+    oldVProps.forEach((oldVProp, key) => {
       if (!this.props.has(key)) {
-        delete element[key];
+        oldVProp.unmount(element);
       }
     });
   }
 
-  private updateEvents(element: E, oldVEvents: ReadonlyMap<string, VEvent<string, Event>>) {
+  private updateEvents(element: E, oldVEvents: ReadonlyMap<string, VEvent>) {
     this.events.forEach((vevent, key) => {
       const oldVEvent = oldVEvents.get(key);
       if (oldVEvent) {
