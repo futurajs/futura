@@ -1,0 +1,22 @@
+{
+  "name": "@futura/example-timer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "parcel build src/index.html --out-dir _build/ --no-autoinstall --no-cache",
+    "start": "parcel src/index.html --out-dir _build/ --no-autoinstall --no-cache"
+  },
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@futura/core": "^0.4.0",
+    "@futura/browser": "^0.4.0",
+    "@futura/html": "^0.4.0"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.10.1",
+    "typescript": "^3.1.1"
+  }
+}
