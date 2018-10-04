@@ -17,16 +17,13 @@
   "homepage": "https://github.com/futurajs/futura",
   "license": "MIT",
   "main": "index.js",
-  "module": "lib.es2015/index.js",
-  "jsnext:main": "lib.es2015/index.js",
-  "types": "lib.es2015/typings/index.d.ts",
+  "types": "lib/typings/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
   "files": [
-    "lib",
-    "lib.es2015"
+    "lib"
   ],
   "publishConfig": {
     "access": "public"
@@ -36,14 +33,12 @@
     "url": "git+https://github.com/futurajs/futura.git"
   },
   "scripts": {
-    "build": "npm run-script build:commonjs && npm run-script build:es2015",
+    "build": "npm run-script build:commonjs",
     "build:commonjs": "npx tsc -P tsconfig.json",
-    "build:es2015": "npx tsc -P tsconfig.es2015.json",
-    "prebuild": "npx rimraf lib/ lib.es2015/",
+    "prebuild": "npx rimraf lib/",
     "prepare": "npm run build",
     "test": "npm test"
   },
-  "test": "jest",
   "bugs": {
     "url": "https://github.com/futurajs/futura/issues"
   },
