@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "es5",
+      "dom"
+    ],
+
+    /* Basic Options */
+    "outDir": "./lib",
+    "declarationDir": "./lib/typings",
+    "baseUrl": "./",                          /* Base directory to resolve non-absolute module names. */
+  }
+}
