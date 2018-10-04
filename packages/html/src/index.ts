@@ -131,10 +131,10 @@ type Optional<T> = T | null | undefined;
 /* Helpers */
 
 function el<T extends keyof HTMLElementTagNameMap>(tag: T): (attrs: Attrs, content?: Content) => VElement<HTMLElementTagNameMap[T]>;
-function el(tag: string): (attributes: Attrs, content?: Content) => VElement<HTMLElement>;
+function el(tag: string): (attrs: Attrs, content?: Content) => VElement<HTMLElement>;
 function el(tag: string) {
-  return function (attributes: Attrs, content: Content = []) {
-    return new VElement(undefined, tag, vattributes(attributes), children(content));
+  return function (attrs: Attrs, content: Content = []) {
+    return new VElement(undefined, tag, vattributes(attrs), children(content));
   }
 }
 
