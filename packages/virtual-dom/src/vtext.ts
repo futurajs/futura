@@ -3,15 +3,11 @@ import { VNode } from "./vnode";
 
 export class VText {
   constructor(
-    private content: string,
+    readonly content: string,
   ) {}
 
-  public mount(): Node {
+  public render(): Node {
     return document.createTextNode(this.content);
-  }
-
-  public unmount(_node: Node): void {
-    // Nothing
   }
 
   public update(oldNode: Node, oldVNode: VNode): boolean {

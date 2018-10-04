@@ -2,15 +2,15 @@ import { VAttr, VEvent, VProp } from "./vattribute";
 import { VNode } from "./vnode";
 
 export class VElement<E extends Element> {
-  private attrs: ReadonlyMap<string, VAttr>;
-  private props: ReadonlyMap<string, VProp>;
-  private events: ReadonlyMap<string, VEvent>;
+  private readonly attrs: ReadonlyMap<string, VAttr>;
+  private readonly props: ReadonlyMap<string, VProp>;
+  private readonly events: ReadonlyMap<string, VEvent>;
 
   constructor(
-    private namespace: string | undefined,
-    private type: string,
+    private readonly namespace: string | undefined,
+    private readonly type: string,
     attributes: ReadonlyArray<VAttr | VProp | VEvent>,
-    private children: ReadonlyArray<VNode>,
+    private readonly children: ReadonlyArray<VNode>,
   ) {
     const classes: string[] = [];
     const attrs = new Map<string, VAttr>();
@@ -45,7 +45,7 @@ export class VElement<E extends Element> {
     this.events = events;
   }
 
-  public mount(): Node {
+  public render(): Node {
     const node = this.namespace
       ? document.createElementNS(this.namespace, this.type)
       : document.createElement(this.type);
@@ -56,29 +56,13 @@ export class VElement<E extends Element> {
     this.updateEvents(element, new Map());
 
     for (const child of this.children) {
-      element.appendChild(child.mount());
+      element.appendChild(child.render());
     }
 
     return element;
   }
 
-  public unmount(node: Node): void {
-    const children = node.childNodes;
-    const vchildren = this.children;
-
-    if (children.length !== vchildren.length) {
-      throw new Error("Unmounting failed due to dom mismatch");
-    }
-
-    for (let i = 0; i < vchildren.length; i++) {
-      const child = children[i];
-      const vchild = vchildren[i];
-
-      vchild.unmount(child);
-    }
-  }
-
-  public update(node: Node, oldVNode: VElement<Element>): boolean {
+  public update(node: Node, oldVNode: VNode): boolean {
     if (oldVNode === this) {
       return true;
     }
@@ -156,12 +140,25 @@ export class VElement<E extends Element> {
     if (this.children === oldVChildren) {
       return;
     }
-    /* FIXME: optimize */
-    for (const oldVChild of oldVChildren) {
-      oldVChild.unmount(element);
-    }
-    for (const vchild of this.children) {
-      vchild.unmount(element);
+
+    if (this.children.length === oldVChildren.length && this.children.length === element.childNodes.length) {
+      for (let i = 0; i < this.children.length; i++) {
+        const vchild = this.children[i];
+        const oldVChild = oldVChildren[i];
+        const child = element.childNodes[i];
+
+        if (!vchild.update(child, oldVChild)) {
+          element.replaceChild(vchild.render(), child);
+        }
+      }
+    } else {
+      console.debug("[virtual-dom] Children node length changed, re-rendering");
+      for (let i = 0; i < oldVChildren.length; i++) {
+        element.removeChild(element.childNodes[i]);
+      }
+      for (const vchild of this.children) {
+        element.appendChild(vchild.render());
+      }
     }
   }
 }
