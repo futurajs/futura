@@ -1,6 +1,6 @@
 import { Dispatch } from "@futura/core";
-import eq = require("lodash.isequal");
 
+import equals from "./equals";
 import { VNode, VText, VElement, VThunk } from "./types";
 
 /**
@@ -137,7 +137,7 @@ export function update(dispatch: Dispatch, node: Node, current: VNode, next: VNo
 
   // VThunk
   if (VNode.isVThunk(current) && VNode.isVThunk(next)) {
-    if (!eq(current.args, next.args)) {
+    if (!equals(current.args, next.args)) {
       return update(dispatch, node, current.render(), next.render());
     } else {
       return node;
@@ -206,7 +206,7 @@ const matchEventHandler = (eh: VElement.EventHandler) => (other: VElement.Data[0
   VElement.Data.isEventHandler(other)
     && other.type === eh.type
     && other.handler === eh.handler
-    && eq(other.options, eh.options);
+    && equals(other.options, eh.options);
 
 const updateEventHandler = (dispatch: Dispatch, element: Element, current: VElement.EventHandler | undefined, next: VElement.EventHandler) => {
   if (!current) {
@@ -312,7 +312,7 @@ const matchChild = (current: VElement.Child, next: VElement.Child): boolean => {
   if (current === next) {
     return true;
   } else if (isKeyedChild(current) && isKeyedChild(next)) {
-    return eq(current[0], next[0]);
+    return equals(current[0], next[0]);
   } else if (VNode.isVText(current) && VNode.isVText(next)) {
     return true;
   } else if (VNode.isVElement(current) && VNode.isVElement(next)) {

@@ -4,7 +4,7 @@ import { AfterReq, AfterReqMessage, Time } from "./service";
 
 
 /** Send the message after a specified duration in milliseconds */
-export const after = <M>(time: number, Message: AfterReqMessage<M>, ...params: any[]): Req<M, AfterReq> =>
+export const after = <M, Args extends any[]>(time: number, Message: AfterReqMessage<M, Args>, ...params: Args): Req<M, AfterReq<Args>> =>
   ({
     service: Time,
     request: { type: "after", time, Message, params },

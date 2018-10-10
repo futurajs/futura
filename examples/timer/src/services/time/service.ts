@@ -21,16 +21,16 @@ export class Time implements Service<TimeReq, TimeSub> {
   }
 }
 
-type TimeReq = AfterReq;
+type TimeReq = AfterReq<any>;
 type TimeSub = never;
 
-export interface AfterReq {
+export interface AfterReq<Args extends any[]> {
   type: "after";
   time: number;
-  Message: AfterReqMessage<any>;
-  params: any[];
+  Message: AfterReqMessage<any, Args>;
+  params: Args;
 }
 
-export interface AfterReqMessage<Message> {
-  new(...params: any[]): Message;
+export interface AfterReqMessage<Message, Args extends any[]> {
+  new(...params: Args): Message;
 }
