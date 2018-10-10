@@ -4,19 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "parcel build src/index.html --out-dir _build/ --no-autoinstall --no-cache",
-    "start": "parcel src/index.html --out-dir _build/ --no-autoinstall --no-cache"
+    "build": "rollup -c",
+    "start": "rollup -c -w"
   },
   "author": "",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@futura/core": "^0.4.0",
     "@futura/browser": "^0.4.0",
-    "@futura/html": "^0.4.0"
+    "@futura/html": "^0.4.0",
+    "rollup-plugin-copy": "^0.2.3"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.10.1",
+    "rollup": "^0.66.6",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-serve": "^0.6.0",
+    "rollup-plugin-size-snapshot": "^0.7.0",
+    "rollup-plugin-typescript": "^1.0.0",
+    "rollup-plugin-uglify": "^6.0.0",
+    "tslib": "^1.9.3",
     "typescript": "^3.1.1"
   }
 }

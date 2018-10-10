@@ -1,20 +1,34 @@
-import { VNode, VElement, VText, VAttr, VEvent, VProp } from "@futura/virtual-dom";
+import { Content, Props, element as e, text } from "@futura/virtual-dom";
+
+import * as attributes from "./attributes";
+import * as events from "./events";
+
+/**
+ * HTML Elements
+ * 
+ * This module contains a set of pre-defined standard HTML element as
+ * functions.
+ * */
 
 
 /** Plain text node */
-export const text = (content: string) =>
-  new VText(content);
+export { text };
 
 /** Generic element */
-export const element = <E extends HTMLElement = HTMLElement>(tag: string, attrs: Attrs, content: Content = []) =>
-  new VElement<E>(undefined, tag, vattributes(attrs), children(content));
+export const element = e(undefined);
 
 /** Specific elements */
+
+const el = (tag: string) => (props?: Props, content?: Content) =>
+  element(tag, props, content);
+
+const empty = (tag: string) => (props?: Props) =>
+  element(tag, props);
 
 export const a = el("a");
 export const abbr = el("abbr");
 export const address = el("address");
-export const area = el("area");
+export const area = empty("area");
 export const article = el("article");
 export const aside = el("aside");
 export const audio = el("audio");
@@ -22,13 +36,13 @@ export const b = el("b");
 export const bdi = el("bdi");
 export const bdo = el("bdo");
 export const blockquote = el("blockquote");
-export const br = el("br");
+export const br = empty("br");
 export const button = el("button");
 export const canvas = el("canvas");
 export const caption = el("caption");
 export const cite = el("cite");
 export const code = el("code");
-export const col = el("col");
+export const col = empty("col");
 export const colgroup = el("colgroup");
 export const data = el("data");
 export const datalist = el("datalist");
@@ -41,7 +55,7 @@ export const div = el("div");
 export const dl = el("dl");
 export const dt = el("dt");
 export const em = el("em");
-export const embed = el("embed");
+export const embed = empty("embed");
 export const fieldset = el("fieldset");
 export const figcaption = el("figcaption");
 export const figure = el("figure");
@@ -55,11 +69,11 @@ export const h5 = el("h5");
 export const h6 = el("h6");
 export const header = el("header");
 export const hgroup = el("hgroup");
-export const hr = el("hr");
+export const hr = empty("hr");
 export const i = el("i");
 export const iframe = el("iframe");
-export const img = el("img");
-export const input = el("input");
+export const img = empty("img");
+export const input = empty("input");
 export const ins = el("ins");
 export const kbd = el("kbd");
 export const label = el("label");
@@ -78,7 +92,7 @@ export const optgroup = el("optgroup");
 export const option = el("option");
 export const output = el("output");
 export const p = el("p");
-export const param = el("param");
+export const param = empty("param");
 export const picture = el("picture");
 export const pre = el("pre");
 export const progress = el("progress");
@@ -93,7 +107,7 @@ export const samp = el("samp");
 export const section = el("section");
 export const select = el("select");
 export const small = el("small");
-export const source = el("source");
+export const source = empty("source");
 export const span = el("span");
 export const strong = el("strong");
 export const sub = el("sub");
@@ -108,67 +122,21 @@ export const th = el("th");
 export const thead = el("thead");
 export const time = el("time");
 export const tr = el("tr");
-export const track = el("track");
+export const track = empty("track");
 export const u = el("u");
 export const ul = el("ul");
 export const var_ = el("var");
 export const video = el("video");
-export const wbr = el("wbr");
+export const wbr = empty("wbr");
 
+/**
+ * HTML Attributes
+ * */
 
-/* Types */
+export { attributes };
 
-export type Content = ContentAtom | ContentArray;
-export type ContentAtom = Optional<VNode | string>;
-export interface ContentArray extends Array<Content> {}
+/**
+ * HTML Events
+ * */
 
-export type Attrs = ReadonlyArray<Optional<VAttr | VEvent | VProp>>;
-export type Attr = VAttr | VEvent | VProp;
-
-type Optional<T> = T | null | undefined;
-
-
-/* Helpers */
-
-function el<T extends keyof HTMLElementTagNameMap>(tag: T): (attrs: Attrs, content?: Content) => VElement<HTMLElementTagNameMap[T]>;
-function el(tag: string): (attrs: Attrs, content?: Content) => VElement<HTMLElement>;
-function el(tag: string) {
-  return function (attrs: Attrs, content: Content = []) {
-    return new VElement(undefined, tag, vattributes(attrs), children(content));
-  }
-}
-
-function children(content: Content) {
-  if (Array.isArray(content)) {
-    const result: VNode[] = [];
-    for (const child of content) {
-      const vnodes = children(child);
-      result.push(...vnodes);
-    }
-    return result;
-  } else {
-    const vnode = child(content as ContentAtom);
-    return vnode ? [vnode] : [];
-  }
-}
-
-function child(content: ContentAtom) {
-  if (VNode.isVNode(content)) {
-    return content;
-  } else if (typeof content === "string") {
-    return text(content);
-  } else {
-    return undefined;
-  }
-}
-
-function vattributes(attrs: Attrs): ReadonlyArray<Attr> {
-  const result: Attr[] = [];
-  for (const attr of attrs) {
-    if (attr !== undefined && attr !== null) {
-      result.push(attr);
-    }
-  }
-
-  return result;
-}
+export { events };

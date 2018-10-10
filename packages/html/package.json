@@ -16,14 +16,13 @@
   "author": "Ali Sabil <ali.sabil@gmail.com>",
   "homepage": "https://github.com/futurajs/futura",
   "license": "MIT",
-  "main": "index.js",
-  "types": "lib/typings/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
+  "main": "lib.cjs/index.js",
+  "module": "lib.esm/index.js",
+  "types": "types/index.d.ts",
   "files": [
-    "lib"
+    "lib.cjs",
+    "lib.esm",
+    "types"
   ],
   "publishConfig": {
     "access": "public"
@@ -33,10 +32,12 @@
     "url": "git+https://github.com/futurajs/futura.git"
   },
   "scripts": {
-    "build": "npm run-script build:commonjs",
-    "build:commonjs": "npx tsc -P tsconfig.json",
-    "prebuild": "npx rimraf lib/",
     "prepare": "npm run build",
+    "prebuild": "npx rimraf lib.cjs/ lib.esm/ types/",
+    "build": "npm run build:cjs && npm run build:esm && npm run build:types",
+    "build:cjs": "npx tsc --target es5 --module commonjs --outDir lib.cjs",
+    "build:esm": "npx tsc --target es5 --module es2015 --outDir lib.esm",
+    "build:types": "npx tsc --declaration --emitDeclarationOnly --outDir types",
     "test": "npm test"
   },
   "bugs": {
@@ -49,6 +50,7 @@
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
     "tslint-language-service": "angelozerr/tslint-language-service#3c6e13e7ee219968af2df6130fd8b57742c9ae74",
-    "typescript": "^3.0.3"
+    "typedoc": "^0.12.0",
+    "typescript": "^3.1.1"
   }
 }

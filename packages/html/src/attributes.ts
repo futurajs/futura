@@ -1,18 +1,12 @@
-import { VAttr, VProp } from "@futura/virtual-dom";
+import { VElement, attr as vattr, prop } from "@futura/virtual-dom";
 
 /* Custom Attributes */
 
 /** Generic Attribute */
-export const attr = (name: string, value: string | undefined, namespace?: string) =>
-  typeof value !== "undefined"
-    ? new VAttr(name, value, namespace)
-    : undefined;
+export const attr = vattr(undefined);
 
 /** Generic Property */
-export const prop = <K extends string, V>(key: K, value: V | undefined) =>
-  typeof value !== "undefined"
-    ? new VProp(key, value)
-    : undefined;
+export { prop };
 
 
 /* Styling Attributes */
@@ -45,7 +39,7 @@ export const prop = <K extends string, V>(key: K, value: V | undefined) =>
  */
 export const class_ = (name: string, enabled: boolean = true) =>
   enabled
-    ? new VAttr("class", name)
+    ? attr("class", name)
     : undefined;
 
 /** Build a set of classes given a mapping from class names to a boolean value.
@@ -66,11 +60,23 @@ export const class_ = (name: string, enabled: boolean = true) =>
   <p class="message message-info">Hello Future</p>
 ```
 */
-export const classes = (classes: Record<string, boolean>) =>
-  new VAttr("class", Object.keys(classes).filter((class_) => classes[class_]).join(" "));
+export const classes = (classes: Record<string, boolean> | ReadonlyArray<string>) => {
+  const values = Array.isArray(classes)
+    ? classes
+    : Object.keys(classes).filter((class_) => (classes as Record<string, boolean> )[class_]);
+
+  return values.length > 0 ? attr("class", values.join(" ")) : undefined;
+}
 
 
 /* Other Attributes */
+
+const attribute = <V extends string>(key: string) => (value: V) =>
+  attr(key, value);
+
+const property = <K extends string, V>(key: K) => (value: V | undefined) =>
+  prop(key, value);
+
 
 export const accept = (types: ReadonlyArray<string>) => prop("accept", types.join(","));
 export const acceptCharset = (types: ReadonlyArray<string>) => prop("acceptCharset", types.join(" "));
@@ -154,11 +160,9 @@ export const width = (value: number | undefined) => typeof value !== "undefined"
 export const wrap = property<"wrap", "hard" | "soft">("wrap");
 
 
-
-
-export function min(v: Date): VProp<"min", string>;
-export function min(v: number | undefined): VAttr | undefined;
-export function min(v: Date | number | undefined): VProp<"min", string> | VAttr | undefined {
+export function min(v: Date): VElement.Prop<"min", string>;
+export function min(v: number | undefined): VElement.Attr | undefined;
+export function min(v: Date | number | undefined): VElement.Prop<"min", string> | VElement.Attr | undefined {
   if (typeof v === "number") {
     return attr("min", v.toString())
   } else if (typeof v === "undefined") {
@@ -168,9 +172,9 @@ export function min(v: Date | number | undefined): VProp<"min", string> | VAttr 
   }
 }
 
-export function max(v: Date): VProp<"max", string>;
-export function max(v: number | undefined): VAttr | undefined;
-export function max(v: Date | number | undefined): VProp<"max", any> | VAttr | undefined {
+export function max(v: Date): VElement.Prop<"max", string>;
+export function max(v: number | undefined): VElement.Attr | undefined;
+export function max(v: Date | number | undefined): VElement.Prop<"max", any> | VElement.Attr | undefined {
   if (typeof v === "number") {
     return attr("max", v.toString())
   } else if (typeof v === "undefined") {
@@ -180,23 +184,8 @@ export function max(v: Date | number | undefined): VProp<"max", any> | VAttr | u
   }
 }
 
-export function value(v: string): VProp<"value", string>;
-export function value(v: number): VProp<"value", number>;
-export function value(v: any): VProp<"value", any> {
-  return new VProp("value", v);
-}
-
-
-/* Helpers */
-
-function attribute<V extends string>(key: string) {
-  return function (value: V) {
-    return attr(key, value);
-  }
-}
-
-function property<K extends string, V>(key: K) {
-  return function (value: V | undefined) {
-    return prop(key, value);
-  }
+export function value(v: string): VElement.Prop<"value", string>;
+export function value(v: number): VElement.Prop<"value", number>;
+export function value(v: any): VElement.Prop<"value", any> {
+  return new VElement.Prop("value", v);
 }

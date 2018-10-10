@@ -1,13 +1,19 @@
 import { program } from "@futura/browser";
-import { div } from "@futura/html";
+import { button, div, attributes, events } from "@futura/html";
+const { classes } = attributes;
+const { onClick } = events;
 
 import { after } from "./services/time";
 
 
 type State = number;
 
-type Message = Tick;
+type Message
+  = Tick
+  | Reset;
+
 class Tick {}
+class Reset {}
 
 const init = () =>
   ({
@@ -19,20 +25,21 @@ const update = (state: State, message: Message) => {
   switch (message.constructor) {
     case Tick:
       return { state: state + 1, requests: [ after(1000, Tick) ] };
+    case Reset:
+      return { state: 0 };
     default:
       return { state };
   }
 };
 
 const view = (state: State) =>
-  div([], state.toString());
+  div([classes(["counter"])], [
+    state.toString(),
+    div([classes(["buttons"])], [
+      button([ onClick(new Reset()) ], [ "Reset" ])
+    ])
+  ]);
 
 
 const app = program<number, any>({ init, update });
-const embed = app.embed(document.getElementsByTagName("main")[0], view);
-
-if (module.hot) {
-  module.hot.dispose(function () {
-    embed.cancel();
-  });
-}
+app.embed(view, document.getElementsByTagName("main")[0]);
