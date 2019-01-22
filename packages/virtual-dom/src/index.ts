@@ -10,13 +10,40 @@ import { VNode, VText, VElement, VThunk } from "./types";
 export { VNode, VText, VElement, VThunk };
 
 export type Props = ReadonlyArray<VElement.Attr | VElement.Prop | VElement.EventHandler | undefined | null>;
-export type Content = ReadonlyArray<VNode | string | undefined | null> | ReadonlyArray<[any, VNode]>;
+export type Content = UnkeyedContent | KeyedContent;
+export type UnkeyedContent = Array<VNode | string | undefined | null>;
+export type KeyedContent = Array<[any, VNode]>;
+
 
 export const text = (content: string): VNode =>
   new VText(content);
 
-export const element = (namespace: string | undefined) => (tagName: string, props: Props = [], content: Content = []): VNode =>
-  new VElement(namespace, tagName, data(props), children(content));
+export function element(namespace: string | undefined, tagName: string): VNode;
+export function element(namespace: string | undefined, tagName: string, props: Props): VNode;
+export function element(namespace: string | undefined, tagName: string, content: Content): VNode;
+export function element(namespace: string | undefined, tagName: string, props: Props, content: Content): VNode;
+export function element(namespace: string | undefined, tagName: string, propsOrContent?: Props | Content, maybeContent?: Content): VNode {
+  if (propsOrContent !== undefined) {
+    if (maybeContent !== undefined) {
+      const props = propsOrContent as Props;
+      return new VElement(namespace, tagName, data(props), children(maybeContent));
+    } else {
+      for (const e of propsOrContent) {
+        if (e !== undefined && e !== null) {
+          if (VElement.Data.isAttr (e) || VElement.Data.isProp (e) || VElement.Data.isEventHandler (e)) {
+            return new VElement(namespace, tagName, data(propsOrContent as Props), []);
+          }
+          if (VNode.isVNode (e) || typeof e === "string" || Array.isArray(e)) {
+            return new VElement(namespace, tagName, [], children(propsOrContent as Content));
+          }
+        }
+      }
+      return new VElement(namespace, tagName, [], []);
+    }
+  } else {
+    return new VElement(namespace, tagName, [], []);
+  }
+}
 
 const data = (props: Props): VElement.Data => {
   const result: Array<VElement.Attr | VElement.Prop | VElement.EventHandler> = [];

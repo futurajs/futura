@@ -1,4 +1,4 @@
-import { Content, Props, element as e, text } from "@futura/virtual-dom";
+import { Content, Props, element as e, text, VNode } from "@futura/virtual-dom";
 
 import * as attributes from "./attributes";
 import * as events from "./events";
@@ -15,15 +15,28 @@ import * as events from "./events";
 export { text };
 
 /** Generic element */
-export const element = e(undefined);
+export const element: {
+  (tagName: string): VNode;
+  (tagName: string, props: Props): VNode;
+  (tagName: string, content: Content): VNode;
+  (tagName: string, props: Props, content: Content): VNode;
+} = e.bind(null, undefined) as any;
 
 /** Specific elements */
 
-const el = (tag: string) => (props?: Props, content?: Content) =>
-  element(tag, props, content);
+const el = (tagName: string): {
+  (): VNode;
+  (props: Props): VNode;
+  (content: Content): VNode;
+  (props: Props, content: Content): VNode;
+} =>
+  e.bind(null, undefined, tagName) as any;
 
-const empty = (tag: string) => (props?: Props) =>
-  element(tag, props);
+const empty = (tagName: string): {
+  (): VNode;
+  (props: Props): VNode;
+} =>
+  e.bind(null, undefined, tagName) as any;
 
 export const a = el("a");
 export const abbr = el("abbr");
