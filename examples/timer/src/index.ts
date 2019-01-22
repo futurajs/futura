@@ -41,5 +41,5 @@ const view = (state: State) =>
   ]);
 
 
-const app = program<number, any>({ init, update });
+const app = program<State, Message>({ init, update });
 app.embed(view, document.getElementsByTagName("main")[0]);
