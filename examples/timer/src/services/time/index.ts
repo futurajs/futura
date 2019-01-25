@@ -1,6 +1,8 @@
-import { Req } from "@futura/core";
+import { Req, Sub } from "@futura/core";
 
-import { AfterReq, AfterReqMessage, Time } from "./service";
+import { Time } from "./service";
+import { AfterReq, AfterReqMessage } from "./service";
+import { EverySub, EverySubMessage } from "./service";
 
 
 /** Send the message after a specified duration in milliseconds */
@@ -8,4 +10,12 @@ export const after = <M, Args extends any[]>(time: number, Message: AfterReqMess
   ({
     service: Time,
     request: { type: "after", time, Message, params },
+  });
+
+
+/** Send the message every N milliseconds */
+export const every = <M, Args extends any[]>(time: number, Message: EverySubMessage<M, Args>, ...params: Args): Sub<M, EverySub<Args>> =>
+  ({
+    service: Time,
+    subscription: { type: "every", time, Message, params },
   });
