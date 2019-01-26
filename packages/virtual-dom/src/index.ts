@@ -339,7 +339,9 @@ const matchChild = (current: VElement.Child, next: VElement.Child): boolean => {
   if (current === next) {
     return true;
   } else if (isKeyedChild(current) && isKeyedChild(next)) {
-    return equals(current[0], next[0]);
+    const currentKey = current[0];
+    const nextKey = next[0];
+    return equals(currentKey, nextKey);
   } else if (VNode.isVText(current) && VNode.isVText(next)) {
     return true;
   } else if (VNode.isVElement(current) && VNode.isVElement(next)) {
