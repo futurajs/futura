@@ -1,3 +1,4 @@
 import * as collections from "./collections";
+import * as services from "./services";
 
-export { collections };
+export { collections, services };
