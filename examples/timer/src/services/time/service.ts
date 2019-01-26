@@ -1,15 +1,15 @@
 import { Dispatch, Service, util } from "@futura/core";
-import eq from "fast-deep-equal";
 
-const { EqMap, EqSet } = util.collections;
+import Subscriptions = util.services.Subscriptions;
+
 
 export class Time implements Service<TimeReq, TimeSub> {
   private readonly dispatch: Dispatch<any>;
-  private everySubs: util.collections.EqMap<EverySub, any>;
+  private everySubs: Subscriptions<EverySub>;
 
   constructor(dispatch: Dispatch<any>) {
     this.dispatch = dispatch;
-    this.everySubs = new EqMap(eq);
+    this.everySubs = new Subscriptions(this.onEverySubAdded, this.onEverySubRemoved);
   }
 
   public handleRequest(cmd: TimeReq) {
@@ -21,31 +21,20 @@ export class Time implements Service<TimeReq, TimeSub> {
   }
 
   public updateSubscriptions(subs: ReadonlyArray<TimeSub>) {
-    const everySubs = new EqSet(eq, subs.filter((sub) => sub.type === "every"));
+    this.everySubs.update(subs.filter((sub) => sub.type === "every"));
+  }
 
-    // Find removed subscriptions
-    this.everySubs.entries().forEach(([oldSub, emitter]) => {
-      if (!everySubs.has(oldSub)) {
-        clearInterval(emitter);
-        this.everySubs.delete(oldSub);
-        console.log ("Cleared old subscription");
-      }
-    });
+  // EverySub
+  private onEverySubAdded = (sub: EverySub) => {
+    const { time, Message, params } = sub;
 
-    // Find new subscriptions
-    everySubs.values().forEach(newSub => {
-      if (!this.everySubs.has(newSub)) {
-        const { time, Message, params } = newSub;
+    return setInterval(() => {
+      this.dispatch(new Message(...params));
+    }, time);
+  }
 
-        const emitter = setInterval(() => {
-          this.dispatch(new Message(...params));
-        }, time);
-
-        this.everySubs.set(newSub, emitter);
-
-        console.log ("Created new subscription");
-      }
-    });
+  private onEverySubRemoved = (_sub: EverySub, state: any) => {
+    clearInterval(state);
   }
 }
 
