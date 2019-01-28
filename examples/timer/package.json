@@ -1,6 +1,6 @@
 {
   "name": "@futura/example-timer",
-  "version": "0.4.0-alpha.0",
+  "version": "0.4.0-alpha.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,9 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@futura/browser": "^0.4.0-alpha.0",
-    "@futura/html": "^0.4.0-alpha.0",
-    "@futura/core": "^0.4.0-alpha.0",
+    "@futura/browser": "^0.4.0-alpha.1",
+    "@futura/core": "^0.4.0-alpha.1",
+    "@futura/html": "^0.4.0-alpha.1",
     "fast-deep-equal": "^2.0.1"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@futura/virtual-dom",
-  "version": "0.4.0-alpha.0",
+  "version": "0.4.0-alpha.1",
   "description": "Virtual DOM implementation for futura",
   "keywords": [
     "elm",
@@ -44,7 +44,7 @@
     "url": "https://github.com/futurajs/futura/issues"
   },
   "dependencies": {
-    "@futura/core": "^0.4.0-alpha.0",
+    "@futura/core": "^0.4.0-alpha.1",
     "fast-deep-equal": "^2.0.1"
   },
   "peerDependencies": {
