@@ -1,5 +1,8 @@
 import { Content, Props, element as e, text, VNode } from "@futura/virtual-dom";
 
+import * as attributes from "./attributes";
+import * as events from "./events";
+
 /**
  * SVG Elements
  * 
@@ -115,10 +118,10 @@ export const view = el("view");
 //  * SVG Attributes
 //  * */
 
-// export { attributes };
+export { attributes };
 
 // /**
 //  * SVG Events
 //  * */
 
-// export { events };
+export { events };
