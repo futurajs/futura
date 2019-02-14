@@ -71,7 +71,7 @@ export const classes = (classes: Record<string, boolean> | ReadonlyArray<string>
 
 /* Other Attributes */
 
-const attribute = <V extends string>(key: string) => (value: V) =>
+const attribute = <V extends string>(key: string) => (value: V | undefined) =>
   attr(key, value);
 
 const property = <K extends string, V>(key: K) => (value: V | undefined) =>
