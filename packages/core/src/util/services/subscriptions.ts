@@ -42,6 +42,12 @@ export class Subscriptions<Sub, SubState> {
       }
     }
   }
+
+  public forEach(callback: (sub: Sub, subState: SubState) => void) {
+    for (const [sub, subState] of this.currentSubs.entries()) {
+      callback(sub, subState);
+    }
+  }
 }
 
 export namespace Subscriptions {
