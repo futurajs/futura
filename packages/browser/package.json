@@ -1,6 +1,6 @@
 {
   "name": "@futura/browser",
-  "version": "0.4.0-alpha.3",
+  "version": "0.4.0-alpha.4",
   "description": "Futura applications on the browser",
   "keywords": [
     "elm",
@@ -42,8 +42,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@futura/core": "^0.4.0-alpha.3",
-    "@futura/virtual-dom": "^0.4.0-alpha.3"
+    "@futura/core": "^0.4.0-alpha.4",
+    "@futura/virtual-dom": "^0.4.0-alpha.4"
   },
   "peerDependencies": {
     "tslib": "*"

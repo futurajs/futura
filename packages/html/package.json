@@ -1,6 +1,6 @@
 {
   "name": "@futura/html",
-  "version": "0.4.0-alpha.3",
+  "version": "0.4.0-alpha.4",
   "description": "Virtual DOM based HTML implementation for futura",
   "keywords": [
     "elm",
@@ -44,7 +44,7 @@
     "url": "https://github.com/futurajs/futura/issues"
   },
   "dependencies": {
-    "@futura/virtual-dom": "^0.4.0-alpha.3"
+    "@futura/virtual-dom": "^0.4.0-alpha.4"
   },
   "peerDependencies": {
     "tslib": "*"
