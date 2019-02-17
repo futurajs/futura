@@ -27,19 +27,17 @@ export class Subscriptions<Sub, SubState> {
     const nextSubs = new EqSet(this.eq, s);
 
     // Removed
-    for (const [currentSub, currentSubState] of currentSubs.entries()) {
-      if (!nextSubs.has(currentSub)) {
-        currentSubs.delete(currentSub);
-        this.onRemoved(currentSub, currentSubState, currentSubs.size);
-      }
+    const removed = currentSubs.entries().filter(([currentSub, _currentSubState]) => !nextSubs.has(currentSub));
+    for (const [currentSub, currentSubState] of removed) {
+      currentSubs.delete(currentSub);
+      this.onRemoved(currentSub, currentSubState, currentSubs.size);
     }
 
     // Added
-    for (const nextSub of nextSubs.values()) {
-      if (!currentSubs.has(nextSub)) {
-        const nextSubState = this.onAdded(nextSub, currentSubs.size);
-        this.currentSubs.set(nextSub, nextSubState);
-      }
+    const added = nextSubs.values().filter((nextSub) => !currentSubs.has(nextSub));
+    for (const nextSub of added) {
+      const nextSubState = this.onAdded(nextSub, currentSubs.size);
+      this.currentSubs.set(nextSub, nextSubState);
     }
   }
 
