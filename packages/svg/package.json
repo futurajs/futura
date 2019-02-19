@@ -1,6 +1,6 @@
 {
   "name": "@futura/svg",
-  "version": "0.4.0-alpha.4",
+  "version": "0.4.0-alpha.5",
   "description": "Virtual DOM based SVG implementation for futura",
   "keywords": [
     "elm",
@@ -45,7 +45,7 @@
     "url": "https://github.com/futurajs/futura/issues"
   },
   "dependencies": {
-    "@futura/virtual-dom": "^0.4.0-alpha.4"
+    "@futura/virtual-dom": "^0.4.0-alpha.5"
   },
   "peerDependencies": {
     "tslib": "*"
