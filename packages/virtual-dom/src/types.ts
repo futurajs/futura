@@ -7,9 +7,9 @@ export type VNode
 
 export namespace VNode {
   export const enum Type {
-    Text,
-    Element,
-    Thunk,
+    Text = 1,
+    Element = 2,
+    Thunk = 3,
   }
 
   export const isVText = (value: any): value is VText => value && value.$type === Type.Text;
@@ -45,9 +45,9 @@ export namespace VElement {
 
   export namespace Data {
     export const enum Type {
-      Attr,
-      EventHandler,
-      Prop,
+      Attr = 100,
+      EventHandler = 101,
+      Prop = 102,
     }
 
     export const isAttr = (value: any): value is Attr => value && value.$type === Data.Type.Attr;
