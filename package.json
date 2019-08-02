@@ -1,9 +1,36 @@
 {
   "name": "futura",
   "private": true,
+  "scripts": {
+    "prepare": "lerna run build",
+    "build": "lerna run build"
+  },
   "devDependencies": {
-    "lerna": "^3.13.0",
+    "@types/jest": "^23.3.3",
+    "jest": "^23.6.0",
+    "lerna": "^3.16.4",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^2.6.3",
+    "rollup": "^0.66.6",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-copy": "^0.2.3",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-serve": "^0.6.0",
+    "rollup-plugin-typescript": "^1.0.0",
+    "rollup-plugin-uglify": "^6.0.0",
+    "ts-jest": "^23.10.4",
+    "tslib": "^1.9.3",
     "tslint": "^5.11.0",
-    "tslint-language-service": "angelozerr/tslint-language-service#3c6e13e7ee219968af2df6130fd8b57742c9ae74"
+    "tslint-language-service": "angelozerr/tslint-language-service#3c6e13e7ee219968af2df6130fd8b57742c9ae74",
+    "typedoc": "^0.12.0",
+    "typescript": "^3.2.4"
+  },
+  "dependencies": {
+    "@futura/browser": "file:packages/browser",
+    "@futura/core": "file:packages/core",
+    "@futura/example-timer": "file:examples/timer",
+    "@futura/html": "file:packages/html",
+    "@futura/svg": "file:packages/svg",
+    "@futura/virtual-dom": "file:packages/virtual-dom"
   }
 }

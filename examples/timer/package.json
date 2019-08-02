@@ -11,20 +11,9 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@futura/browser": "^0.4.0-alpha.5",
-    "@futura/core": "^0.4.0-alpha.4",
-    "@futura/html": "^0.4.0-alpha.5",
+    "@futura/browser": "file:../../packages/browser",
+    "@futura/core": "file:../../packages/core",
+    "@futura/html": "file:../../packages/html",
     "fast-deep-equal": "^2.0.1"
-  },
-  "devDependencies": {
-    "rollup": "^0.66.6",
-    "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-copy": "^0.2.3",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-serve": "^0.6.0",
-    "rollup-plugin-typescript": "^1.0.0",
-    "rollup-plugin-uglify": "^6.0.0",
-    "tslib": "^1.9.3",
-    "typescript": "^3.2.4"
   }
 }

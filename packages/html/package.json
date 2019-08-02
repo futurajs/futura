@@ -44,20 +44,10 @@
     "url": "https://github.com/futurajs/futura/issues"
   },
   "dependencies": {
-    "@futura/virtual-dom": "^0.4.0-alpha.5"
+    "@futura/virtual-dom": "file:../virtual-dom"
   },
   "peerDependencies": {
     "tslib": "*"
-  },
-  "devDependencies": {
-    "jest": "^23.6.0",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^2.6.3",
-    "ts-jest": "^23.10.4",
-    "tslint": "^5.11.0",
-    "tslint-language-service": "angelozerr/tslint-language-service#3c6e13e7ee219968af2df6130fd8b57742c9ae74",
-    "typedoc": "^0.12.0",
-    "typescript": "^3.2.4"
   },
   "jest": {
     "preset": "ts-jest",

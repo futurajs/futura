@@ -42,19 +42,15 @@
     "test": "jest"
   },
   "dependencies": {
-    "@futura/core": "^0.4.0-alpha.4",
-    "@futura/virtual-dom": "^0.4.0-alpha.5"
+    "@futura/core": "file:../core",
+    "@futura/virtual-dom": "file:../virtual-dom"
   },
   "peerDependencies": {
     "tslib": "*"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.3",
-    "jest": "^23.6.0",
     "npm-run-all": "^4.1.5",
-    "rimraf": "^2.6.3",
-    "ts-jest": "^23.10.3",
-    "typescript": "^3.2.4"
+    "rimraf": "^2.6.3"
   },
   "jest": {
     "preset": "ts-jest",
