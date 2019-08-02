@@ -1,10 +1,10 @@
 import { program } from "@futura/browser";
-import { button, div, attributes, events } from "@futura/html";
-const { classes } = attributes;
-const { onClick } = events;
+import { button, div, lazy, attributes, events } from "@futura/html";
 
 import { /* after, */ every } from "./services/time";
 
+const { classes } = attributes;
+const { onClick } = events;
 
 type State = number;
 
@@ -35,15 +35,21 @@ const update = (state: State, message: Message) => {
   }
 };
 
-const subscriptions = (state: State) =>
-  state < 10 ? [ every(1000, Tick) ] : [ every(500, Tick) ];
+const subscriptions = (_state: State) =>
+  [ every(1000, Tick) ];
 
 const view = (state: State) =>
   div([classes(["counter"])], [
-    state.toString(),
-    div([classes(["buttons"])], [
-      button([ onClick(new Reset()) ], [ "Reset" ])
-    ])
+    lazy(viewCount, state),
+    lazy(viewButtons)
+  ]);
+
+const viewCount = (count: number) =>
+  div([count.toString()]);
+
+const viewButtons = () =>
+  div([classes(["buttons"])], [
+    button([ onClick(new Reset()) ], [ "Reset" ])
   ]);
 
 
