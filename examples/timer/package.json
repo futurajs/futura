@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c",
-    "start": "rollup -c -w"
+    "build": "npx rollup -c",
+    "start": "npx rollup -c -w"
   },
   "author": "",
   "license": "MIT",

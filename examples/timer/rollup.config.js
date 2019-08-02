@@ -20,7 +20,9 @@ export default {
     commonjs(),
     production && uglify(),
     copy({
-      "src/index.html": "_build/index.html"
+      targets: [
+        { src: "src/index.html", dest: "_build/" }
+      ]
     }),
     !production && serve('_build'),
   ]

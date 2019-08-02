@@ -35,7 +35,7 @@
   "scripts": {
     "prepare": "npm run build",
     "prebuild": "rimraf lib.cjs/ lib.esm/ types/",
-    "build": "npm-run-all -p build:*",
+    "build": "npm-run-all -s build:*",
     "build:cjs": "tsc --target es5 --module commonjs --outDir lib.cjs",
     "build:esm": "tsc --target es5 --module es2015 --outDir lib.esm",
     "build:types": "tsc --declaration --emitDeclarationOnly --outDir types",
