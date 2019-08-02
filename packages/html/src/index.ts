@@ -1,4 +1,4 @@
-import { Content, Props, element as e, text, VNode } from "@futura/virtual-dom";
+import { Content, Props, element as e, lazy, text, VNode } from "@futura/virtual-dom";
 
 import * as attributes from "./attributes";
 import * as events from "./events";
@@ -21,6 +21,9 @@ export const element: {
   (tagName: string, content: Content): VNode;
   (tagName: string, props: Props, content: Content): VNode;
 } = e.bind(null, undefined) as any;
+
+/** Lazy element */
+export { lazy };
 
 /** Specific elements */
 
