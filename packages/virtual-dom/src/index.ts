@@ -93,8 +93,8 @@ export const prop = <K extends string, V>(name: K, value: V | undefined) =>
     ? new VElement.Prop(name, value)
     : undefined;
 
-export const on = <T extends string, E extends Event, M>(type: T, handler: (event: E) => M, options?: VElement.EventHandler.Options) =>
-  new VElement.EventHandler(type, handler, options);
+export const on = <T extends string, E extends Event, M, A extends any[]>(type: T, handler: (event: E, ...args: A) => M, options?: VElement.EventHandler.Options, ...args: A) =>
+  new VElement.EventHandler(type, handler, args, options);
 
 export const lazy = <Args extends any[]>(thunk: (...args: Args) => VNode, ...args: Args): VNode =>
   new VThunk<Args>(thunk, args);
@@ -233,6 +233,7 @@ const matchEventHandler = (eh: VElement.EventHandler) => (other: VElement.Data[0
   VElement.Data.isEventHandler(other)
     && other.type === eh.type
     && other.handler === eh.handler
+    && equals(other.args, eh.args)
     && equals(other.options, eh.options);
 
 const updateEventHandler = (dispatch: Dispatch, element: Element, current: VElement.EventHandler | undefined, next: VElement.EventHandler) => {

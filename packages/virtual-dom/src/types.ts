@@ -74,7 +74,7 @@ export namespace VElement {
     ) {}
   }
 
-  export class EventHandler<T extends string = string, Ev extends Event = Event, M = any> {
+  export class EventHandler<T extends string = string, Ev extends Event = Event, A extends any[] = any[], M = any> {
     readonly $type: Data.Type.EventHandler = Data.Type.EventHandler;
 
     private _listener: ((event: Ev) => void) | undefined;
@@ -82,14 +82,15 @@ export namespace VElement {
 
     constructor(
       readonly type: T,
-      readonly handler: (event: Ev) => M,
+      readonly handler: (event: Ev, ...args: A) => M,
+      readonly args: A,
       readonly options: EventHandler.Options = {},
     ) {}
 
     public listener(dispatch: Dispatch) {
       if (!this._listener) {
         this._listener = (event: Ev) => {
-          const result = this.handler(event);
+          const result = this.handler(event, ...this.args);
           if (result !== undefined) {
             dispatch(result);
           }

@@ -4,36 +4,35 @@ import { VElement, on } from "@futura/virtual-dom";
 /** Mouse Events */
 
 export const onClick = <M>(message: M, options?: VElement.EventHandler.Options) =>
-  on("click", plainEvent(message), options);
+  on("click", plainEvent, options, message);
 
 export const onDoubleClick = <M>(message: M, options?: VElement.EventHandler.Options) =>
-  on("dblclick", plainEvent(message), options);
+  on("dblclick", plainEvent, options, message);
 
 export const onMouseDown = <M>(message: M, options?: VElement.EventHandler.Options) =>
-  on("mousedown", plainEvent(message), options);
+  on("mousedown", plainEvent, options, message);
 
 export const onMouseUp = <M>(message: M, options?: VElement.EventHandler.Options) =>
-  on("mouseup", plainEvent(message), options);
+  on("mouseup", plainEvent, options, message);
 
 export const onMouseEnter = <M>(message: M, options?: VElement.EventHandler.Options) =>
-  on("mouseenter", plainEvent(message), options);
+  on("mouseenter", plainEvent, options, message);
 
 export const onMouseLeave = <M>(message: M, options?: VElement.EventHandler.Options) =>
-  on("mouseleave", plainEvent(message), options);
+  on("mouseleave", plainEvent, options, message);
 
 export const onMouseOver = <M>(message: M, options?: VElement.EventHandler.Options) =>
-  on("mouseover", plainEvent(message), options);
+  on("mouseover", plainEvent, options, message);
 
 export const onMouseOut = <M>(message: M, options?: VElement.EventHandler.Options) =>
-  on("mouseout", plainEvent(message), options);
+  on("mouseout", plainEvent, options, message);
 
 
 /** Custom Events */
-export { on as custom };
+export { on };
 
 
 // Helpers
 
-const plainEvent = <M>(message: M) => (_event: Event) => {
-  return message;
-};
+const plainEvent = <M>(_event: Event, message: M) =>
+  message;
