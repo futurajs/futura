@@ -1,9 +1,21 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "lib": [
       "es5",
       "dom"
-    ]
-  }
+    ],
+
+    "rootDir": "./src",
+    "outDir": "./lib",
+  },
+
+  "references": [
+    {
+      "path": "../core/tsconfig.json"
+    },
+    {
+      "path": "../virtual-dom/tsconfig.json"
+    }
+  ],
 }

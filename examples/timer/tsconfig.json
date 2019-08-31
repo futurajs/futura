@@ -1,11 +1,16 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "target": "es5",
     "lib": [
       "es5",
       "dom",
     ],
-    "types": ["node"]
-  }
+    "types": ["node"],
+  },
+
+  "references": [
+    { "path": "../../packages/browser" },
+    { "path": "../../packages/html" },
+    { "path": "../../packages/svg" },
+  ]
 }

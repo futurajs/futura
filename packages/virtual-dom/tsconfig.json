@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "lib": [
       "es5",
@@ -7,6 +7,13 @@
       "dom"
     ],
 
-    "allowSyntheticDefaultImports": true
-  }
+    "rootDir": "./src",
+    "outDir": "./lib",
+  },
+
+  "references": [
+    {
+      "path": "../core/tsconfig.json"
+    }
+  ],
 }

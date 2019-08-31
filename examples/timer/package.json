@@ -5,15 +5,15 @@
   "main": "index.js",
   "scripts": {
     "build": "npx rollup -c",
+    "clean": "rimraf _build/",
     "start": "npx rollup -c -w"
   },
-  "author": "",
   "license": "MIT",
   "private": true,
   "dependencies": {
     "@futura/browser": "file:../../packages/browser",
     "@futura/core": "file:../../packages/core",
     "@futura/html": "file:../../packages/html",
-    "fast-deep-equal": "^2.0.1"
+    "tslib": "^1.10.0"
   }
 }

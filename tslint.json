@@ -1,7 +1,0 @@
-{
-  "extends": "tslint:recommended",
-  "rules": {
-    "no-consecutive-blank-lines": [true, 2],
-    "no-namespace": false
-  }
-}

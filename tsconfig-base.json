@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es5",
+    "module": "commonjs",
+    "lib": [
+      "es5"
+    ],
+
+    "composite": true,
+
+    /* Output */
+    "declaration": true,
+    // "importHelpers": true,
+    "downlevelIteration": true,
+    "noEmitOnError": true,
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "alwaysStrict": true,
+
+    /* Additional Checks */
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Source Map Options */
+    "sourceMap": true,
+    "declarationMap": true,
+  }
+}

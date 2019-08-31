@@ -17,11 +17,11 @@ export default {
   plugins: [
     typescript(),
     resolve(),
-    commonjs(),
+    commonjs({extensions: [ '.js', '.ts' ]}),
     production && uglify(),
     copy({
       targets: [
-        { src: "src/index.html", dest: "_build/" }
+        { src: 'src/index.html', dest: '_build/' }
       ]
     }),
     !production && serve('_build'),

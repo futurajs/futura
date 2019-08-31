@@ -5,7 +5,7 @@ import Subscriptions = util.services.Subscriptions;
 
 export class Time implements Service<TimeReq, TimeSub> {
   private readonly dispatch: Dispatch<any>;
-  private everySubs: Subscriptions<EverySub>;
+  private everySubs: Subscriptions<EverySub, NodeJS.Timeout>;
 
   constructor(dispatch: Dispatch<any>) {
     this.dispatch = dispatch;

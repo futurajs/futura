@@ -1,6 +1,5 @@
-import equals from "fast-deep-equal";
-
 import { Eq, EqMap, EqSet } from "../collections";
+import { equals } from "../equals";
 
 
 export class Subscriptions<Sub, SubState> {

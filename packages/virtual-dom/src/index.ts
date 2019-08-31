@@ -1,7 +1,8 @@
-import { Dispatch } from "@futura/core";
+import { Dispatch, util } from "@futura/core";
 
-import equals from "./equals";
 import { VNode, VText, VElement, VThunk } from "./types";
+
+const equals = util.equals;
 
 /**
  * VNode types

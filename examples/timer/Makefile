@@ -3,23 +3,17 @@ all: build
 
 # Distribution
 .PHONY: build
-build: node_modules
+build:
+	$(MAKE) -C ../../
 	@npm run build --silent
 
 # Development
 .PHONY: develop
-develop: node_modules
+develop:
+	$(MAKE) -C ../../
 	@npm start --silent
 
 # Clean
-.PHONY: clean distclean
+.PHONY: clean
 clean:
 	$(RM) -R _build/
-
-distclean: clean
-	$(RM) -R node_modules
-
-# Internals
-node_modules: package.json
-	lerna bootstrap
-	touch "$@"
