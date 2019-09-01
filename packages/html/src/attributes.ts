@@ -11,6 +11,18 @@ export { prop };
 
 /* Styling Attributes */
 
+
+/**
+ * Specify a style for the element. Multiple styles can be applied by
+ * using thi attribute multiple times.
+ * 
+ * @param name - The style name
+ * @param value - The style value
+ */
+export const style = (name: string, value: string) =>
+  attr("style", `${name}: ${value}`);
+
+
 /**
  * Classes of the element. This function doesn't return any attribute if
  * the `enabled` parameter is set to `false`.

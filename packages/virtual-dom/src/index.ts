@@ -49,11 +49,14 @@ export function element(namespace: string | undefined, tagName: string, propsOrC
 const data = (props: Props): VElement.Data => {
   const result: Array<VElement.Attr | VElement.Prop | VElement.EventHandler> = [];
   const classes: Array<string> = [];
+  const styles: Array<string> = [];
   for (const prop of props) {
     if (VElement.Data.isAttr(prop) && prop.name === "class" && prop.namespace === undefined) {
       classes.push(prop.value);
     } else if (VElement.Data.isProp(prop) && prop.name === "className") {
       classes.push(prop.value);
+    } else if (VElement.Data.isAttr(prop) && prop.name === "style" && prop.namespace === undefined) {
+      styles.push(prop.value);
     } else if (prop !== null && prop !== undefined) {
       result.push(prop);
     }
@@ -61,6 +64,10 @@ const data = (props: Props): VElement.Data => {
 
   if (classes.length > 0) {
     result.push(new VElement.Attr(undefined, "class", classes.join(" ")));
+  }
+
+  if (styles.length > 0) {
+    result.push(new VElement.Attr(undefined, "style", styles.join("; ")));
   }
 
   return result;
