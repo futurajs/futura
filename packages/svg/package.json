@@ -17,8 +17,8 @@
   "author": "Ali Sabil <ali.sabil@gmail.com>",
   "homepage": "https://github.com/futurajs/futura",
   "license": "Apache-2.0",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -27,7 +27,7 @@
     "url": "git+https://github.com/futurajs/futura.git"
   },
   "scripts": {
-    "clean": "rimraf lib/ tsconfig.tsbuildinfo",
+    "clean": "tsc --build . --clean",
     "build": "tsc --build .",
     "test": "jest"
   },
