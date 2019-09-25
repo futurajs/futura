@@ -29,7 +29,8 @@ export function element(namespace: string | undefined, tagName: string, propsOrC
       const props = propsOrContent as Props;
       return new VElement(namespace, tagName, data(props), children(maybeContent));
     } else {
-      for (const e of propsOrContent) {
+      for (let i = 0; i < propsOrContent.length; i++) {
+        const e = propsOrContent[i];
         if (e !== undefined && e !== null) {
           if (VElement.Data.isAttr (e) || VElement.Data.isProp (e) || VElement.Data.isEventHandler (e)) {
             return new VElement(namespace, tagName, data(propsOrContent as Props), []);
@@ -50,7 +51,8 @@ const data = (props: Props): VElement.Data => {
   const result: Array<VElement.Attr | VElement.Prop | VElement.EventHandler> = [];
   const classes: Array<string> = [];
   const styles: Array<string> = [];
-  for (const prop of props) {
+  for (let i = 0; i < props.length; i++) {
+    const prop = props[i];
     if (VElement.Data.isAttr(prop) && prop.name === "class" && prop.namespace === undefined) {
       classes.push(prop.value);
     } else if (VElement.Data.isProp(prop) && prop.name === "className") {
@@ -79,7 +81,8 @@ const children = (content: Content): VElement.Children => {
   } else {
     // FIXME: optimize no-op
     const result: Array<VNode> = [];
-    for (const value of content) {
+    for (let i = 0; i < content.length; i++) {
+      const value = content[i];
       if (VNode.isVNode(value)) {
         result.push(value);
       } else if (typeof value === "string") {
@@ -185,7 +188,20 @@ export function update(dispatch: Dispatch, node: Node, current: VNode, next: VNo
 
 
 function updateData(dispatch: Dispatch, node: Element, current: VElement.Data, next: VElement.Data) {
-  for (const datum of next) {
+  // FIXME: optimize
+  for (let i = 0; i < current.length; i++) {
+    const datum = current[i];
+    if (VElement.Data.isAttr(datum) && !find(next, matchAttr(datum))) {
+      removeAttr(node, datum);
+    } else if (VElement.Data.isEventHandler(datum) && !find(next, matchEventHandler(datum))) {
+      removeEventHandler(dispatch, node, datum);
+    } else if (VElement.Data.isProp(datum) && !find(next, matchProp(datum))) {
+      removeProp(node, datum);
+    }
+  }
+
+  for (let i = 0; i < next.length; i++) {
+    const datum = next[i];
     if (VElement.Data.isAttr(datum)) {
       const existing = find(current, matchAttr(datum));
       updateAttr(node, existing, datum);
@@ -195,17 +211,6 @@ function updateData(dispatch: Dispatch, node: Element, current: VElement.Data, n
     } else if (VElement.Data.isProp(datum)) {
       const existing = find(current, matchProp(datum));
       updateProp(node, existing, datum);
-    }
-  }
-
-  // FIXME: optimize
-  for (const datum of current) {
-    if (VElement.Data.isAttr(datum) && !find(next, matchAttr(datum))) {
-      removeAttr(node, datum);
-    } else if (VElement.Data.isEventHandler(datum) && !find(next, matchEventHandler(datum))) {
-      removeEventHandler(dispatch, node, datum);
-    } else if (VElement.Data.isProp(datum) && !find(next, matchProp(datum))) {
-      removeProp(node, datum);
     }
   }
 }
@@ -246,12 +251,16 @@ const matchEventHandler = (eh: VElement.EventHandler) => (other: VElement.Data[0
 
 const updateEventHandler = (dispatch: Dispatch, element: Element, current: VElement.EventHandler | undefined, next: VElement.EventHandler) => {
   if (!current) {
-    element.addEventListener(next.type, next.listener(dispatch), next.options);
+    const listener = next.createListener(dispatch);
+    element.addEventListener(next.type, listener, next.options);
+  } else {
+    next.takeListener(current);
   }
 }
 
 const removeEventHandler = (dispatch: Dispatch, element: Element, current: VElement.EventHandler) => {
-  element.removeEventListener(current.type, current.listener(dispatch), current.options);
+  const listener = current.getListener();
+  element.removeEventListener(current.type, listener, current.options);
 }
 
 // VElement.Prop
@@ -322,7 +331,8 @@ function insertChildren(dispatch: Dispatch, container: Node, children: VElement.
 
   if (children.length > 1 && container.ownerDocument) {
     const fragment = container.ownerDocument.createDocumentFragment();
-    for (const child of children) {
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
       fragment.appendChild(render(dispatch, unkeyChild(child)));
     }
     container.insertBefore(fragment, before);
@@ -379,7 +389,8 @@ const unkeyChild = (child: VElement.Child): VNode =>
 // Helpers
 
 const find = <T, S extends T>(arr: ReadonlyArray<T>, pred: (value: T) => value is S): S | undefined => {
-  for (const e of arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const e = arr[i];
     if (pred(e)) {
       return e;
     }

@@ -78,7 +78,6 @@ export namespace VElement {
     readonly $type: Data.Type.EventHandler = Data.Type.EventHandler;
 
     private _listener: ((event: Ev) => void) | undefined;
-    private _dispatch: Dispatch | undefined;
 
     constructor(
       readonly type: T,
@@ -87,7 +86,7 @@ export namespace VElement {
       readonly options: EventHandler.Options = {},
     ) {}
 
-    public listener(dispatch: Dispatch) {
+    public createListener(dispatch: Dispatch) {
       if (!this._listener) {
         this._listener = (event: Ev) => {
           const result = this.handler(event, ...this.args);
@@ -95,12 +94,23 @@ export namespace VElement {
             dispatch(result);
           }
         }
-        this._dispatch = dispatch;
-      } else if (this._dispatch !== dispatch) {
-        throw new Error(`@futura/virtual-dom: Event Handler dispatch function changed`);
+        return this._listener;
+      } else {
+        throw new Error(`@futura/virtual-dom: Listener already created`);
       }
+    }
 
-      return this._listener;
+    public takeListener(other: EventHandler) {
+      this._listener = other._listener;
+      other._listener = undefined;
+    }
+
+    public getListener() {
+      if (this._listener) {
+        return this._listener;
+      } else {
+        throw new Error(`@futura/virtual-dom: Listener not created`);
+      }
     }
   }
 
