@@ -1,6 +1,6 @@
 {
   "name": "@futura/html",
-  "version": "0.4.0-alpha.8",
+  "version": "0.4.0-alpha.9",
   "description": "Virtual DOM based HTML implementation for futura",
   "keywords": [
     "elm",
