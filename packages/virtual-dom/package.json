@@ -34,7 +34,9 @@
     "url": "https://github.com/futurajs/futura/issues"
   },
   "dependencies": {
-    "@futura/core": "file:../core"
+    "@futura/core": "file:../core",
+    "@types/core-js": "^2.5.2",
+    "core-js": "^3.2.1"
   },
   "peerDependencies": {
     "tslib": "*"

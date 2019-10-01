@@ -1,4 +1,6 @@
-import { Dispatch } from "@futura/core";
+import { util } from "@futura/core";
+
+const equals = util.equals;
 
 export type VNode
   = VText
@@ -29,19 +31,40 @@ export class VText {
 
 export class VElement {
   readonly $type: VNode.Type.Element = VNode.Type.Element;
+  readonly attrs: readonly VElement.Attr[];
+  readonly eventHandlers: readonly VElement.EventHandler[];
+  readonly props: readonly VElement.Prop[];
 
   constructor(
     readonly namespace: string | undefined,
     readonly tagName: string,
-    readonly data: ReadonlyArray<VElement.Attr | VElement.EventHandler | VElement.Prop>,
+    data: ReadonlyArray<VElement.Attr | VElement.EventHandler | VElement.Prop>,
     readonly children: VElement.Children,
-  ) {}
+  ) {
+    this.attrs = data.filter(VElement.Data.isAttr);
+    this.eventHandlers = data.filter(VElement.Data.isEventHandler);
+    this.props = data.filter(VElement.Data.isProp);
+  }
 }
 
 export namespace VElement {
-  export type Children = ReadonlyArray<VNode> | ReadonlyArray<[any, VNode]>;
-  export type Child = VNode| [any, VNode];
+  export type Children = readonly VNode[] | readonly KeyedChild[];
+  export type Child = VNode | KeyedChild;
+  export type KeyedChild = [any, VNode];
   export type Data = ReadonlyArray<Attr | EventHandler | Prop>;
+
+  export namespace Child {
+    export const isKeyed = (child: any): child is KeyedChild =>
+      Array.isArray(child) && child.length === 2 && VNode.isVNode(child[1]);
+
+    export const unkey = (child: Child): VNode =>
+      Array.isArray(child) ? child[1] : child;
+  }
+
+  export namespace KeyedChild {
+    export const unkey = (child: KeyedChild) =>
+      child[1];
+  }
 
   export namespace Data {
     export const enum Type {
@@ -63,6 +86,11 @@ export namespace VElement {
       readonly name: string,
       readonly value: string,
     ) {}
+
+    public matches(other: Attr) {
+      return this.name === other.name
+        && this.namespace === other.namespace;
+    }
   }
 
   export class Prop<K extends string = string, V = any> {
@@ -72,45 +100,27 @@ export namespace VElement {
       readonly name: K,
       readonly value: V,
     ) {}
+
+    public matches(other: Prop) {
+      return this.name === other.name;
+    }
   }
 
-  export class EventHandler<T extends string = string, Ev extends Event = Event, A extends any[] = any[], M = any> {
+  export class EventHandler<EventType extends string = string, Ev extends Event = Event, Args extends any[] = any[], Message = any> {
     readonly $type: Data.Type.EventHandler = Data.Type.EventHandler;
 
-    private _listener: ((event: Ev) => void) | undefined;
-
     constructor(
-      readonly type: T,
-      readonly handler: (event: Ev, ...args: A) => M,
-      readonly args: A,
+      readonly type: EventType,
+      readonly handler: (event: Ev, ...args: Args) => Message,
+      readonly args: Args,
       readonly options: EventHandler.Options = {},
     ) {}
 
-    public createListener(dispatch: Dispatch) {
-      if (!this._listener) {
-        this._listener = (event: Ev) => {
-          const result = this.handler(event, ...this.args);
-          if (result !== undefined) {
-            dispatch(result);
-          }
-        }
-        return this._listener;
-      } else {
-        throw new Error(`@futura/virtual-dom: Listener already created`);
-      }
-    }
-
-    public takeListener(other: EventHandler) {
-      this._listener = other._listener;
-      other._listener = undefined;
-    }
-
-    public getListener() {
-      if (this._listener) {
-        return this._listener;
-      } else {
-        throw new Error(`@futura/virtual-dom: Listener not created`);
-      }
+    public matches(other: EventHandler) {
+      return this.type === other.type
+        && this.handler === other.handler
+        && equals(this.args, other.args)
+        && equals(this.options, other.options);
     }
   }
 
