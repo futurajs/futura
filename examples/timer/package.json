@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx rollup -c",
-    "clean": "rimraf _build/",
-    "start": "npx rollup -c -w"
+    "build": "npx -- rollup -c",
+    "clean": "npx -- rimraf _build/",
+    "start": "npx -- rollup -c -w"
   },
   "license": "MIT",
   "private": true,

@@ -27,8 +27,8 @@
     "url": "git+https://github.com/futurajs/futura.git"
   },
   "scripts": {
-    "clean": "rimraf lib/ tsconfig.tsbuildinfo",
-    "build": "tsc --build .",
+    "clean": "npx -- rimraf lib/ tsconfig.tsbuildinfo",
+    "build": "npx -p typescript -- tsc --build .",
     "test": "jest"
   },
   "dependencies": {

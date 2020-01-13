@@ -4,7 +4,7 @@ all: build
 # Build
 .PHONY: build
 build: node_modules
-	@npm run build
+	@npx -p typescript -- tsc --build .
 
 .PHONY: build
 clean-build: clean node_modules
@@ -18,7 +18,7 @@ publish.prelease: clean-build
 # Clean
 .PHONY: clean distclean
 clean: node_modules
-	@npm run clean
+	@npx -p lerna -- lerna run clean
 
 distclean: clean
 	$(RM) -R node_modules

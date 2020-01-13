@@ -5,7 +5,11 @@
       "es5",
       "dom"
     ],
+    "rootDir": "./src/",
+    "outDir": "./"
   },
+  "include": ["src/*"],
+  "exclude": [],
 
   "references": [
     {

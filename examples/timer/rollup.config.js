@@ -1,7 +1,7 @@
-import typescript from 'rollup-plugin-typescript';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import { uglify } from 'rollup-plugin-uglify';
+import typescript from '@rollup/plugin-typescript';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import { terser } from 'rollup-plugin-terser';
 import serve from 'rollup-plugin-serve';
 import copy from 'rollup-plugin-copy'
 
@@ -17,8 +17,8 @@ export default {
   plugins: [
     typescript(),
     resolve(),
-    commonjs({extensions: [ '.js', '.ts' ]}),
-    production && uglify(),
+    commonjs({extensions: [ '.js' ]}),
+    production && terser(),
     copy({
       targets: [
         { src: 'src/index.html', dest: '_build/' }
